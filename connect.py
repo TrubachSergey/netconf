@@ -15,10 +15,9 @@ def parse_args(argv):
     parser.add_argument('--command', help='command for execute')
     return parser.parse_args(argv)
 
-
 if __name__ == "__main__":
     vlan = input('Input Vlan number:')
-    ip = input('Input IP for vlan:')
+    ip = helpers.need_ip()
     mask = input('Input mask for vlan:')
     config = helpers.configure_intf(vlan=vlan, ip=ip, mask=mask)
     conf_to_str = ''.join(map(str, config))

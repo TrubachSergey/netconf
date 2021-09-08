@@ -1,4 +1,5 @@
 import paramiko
+import ipaddress
 
 def connect(user, ip, password):
     '''
@@ -25,3 +26,17 @@ def configure_intf(vlan, ip, mask):
     return result
 
 
+def check_ip(ip):
+    try:
+        ipaddress.ip_address(ip)
+        return True
+    except ValueError as err:
+        return False
+
+def need_ip():
+    ip = input('Input IP for vlan:')
+    if helpers.check_ip(ip) == True:
+        return ip
+    else:
+        print('Invalid IP address, please try again')
+        need_ip()
