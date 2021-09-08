@@ -1,8 +1,9 @@
-import paramiko
 import argparse
 import sys
 import time
 from pprint import pprint
+
+import helpers
 
 
 def parse_args(argv):
@@ -15,18 +16,16 @@ def parse_args(argv):
     return parser.parse_args(argv)
 
 
-def connect(user, ip, password):
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(hostname=ip, username=user, password=password, port=22,
-                   allow_agent=False, look_for_keys=False)
-    return client
-
 if __name__ == "__main__":
+    vlan = input('Input Vlan number:')
+    ip = input('Input IP for vlan:')
+    mask = input('Input mask for vlan:')
+    config = helpers.configure_intf(vlan=vlan, ip=ip, mask=mask)
+    conf_to_str = ''.join(map(str, config))
     args = parse_args(sys.argv[1:])
-    client = connect(ip=args.ip, user=args.user, password=args.password)
+    client = helpers.connect(ip=args.ip, user=args.user, password=args.password)
     result = client.invoke_shell()
-    result.send(f"{args.command}\n")
+    result.send(f"{conf_to_str}")
     while not result.recv_ready():
         time.sleep(3)
     output = result.recv(60000).decode("utf-8")
