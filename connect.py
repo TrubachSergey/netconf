@@ -1,10 +1,8 @@
 import argparse
 import sys
 import time
-from pprint import pprint
-
 import helpers
-
+from pprint import pprint
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(
@@ -18,15 +16,12 @@ def parse_args(argv):
 if __name__ == "__main__":
     vlan = input('Input Vlan number:')
     ip = helpers.need_ip()
-    mask = input('Input mask for vlan:')
+    mask = helpers.need_mask()
     config = helpers.configure_intf(vlan=vlan, ip=ip, mask=mask)
-    conf_to_str = ''.join(map(str, config))
     args = parse_args(sys.argv[1:])
     client = helpers.connect(ip=args.ip, user=args.user, password=args.password)
     result = client.invoke_shell()
-    result.send(f"{conf_to_str}")
+    result.send(config)
     while not result.recv_ready():
         time.sleep(3)
-    output = result.recv(60000).decode("utf-8")
-    pprint(output, width=120)
     client.close()

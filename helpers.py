@@ -16,15 +16,15 @@ def configure_intf(vlan, ip, mask):
     '''
     Функция генерирует конфигурацию интерфейса
     '''
-    conf_t = 'conf t\n'
-    conf_create_vlan = f'vlan {vlan}\n'
-    config_ip_vlan = f'interface vlan {vlan}\n'
-    config_ip = f'ip address {ip} {mask}\n'
-    config_mtu = 'mtu 9216\n'
+    conf_t = 'conf t'
+    conf_create_vlan = f'vlan {vlan}'
+    config_ip_vlan = f'interface vlan {vlan}'
+    config_ip = f'ip address {ip} {mask}'
+    config_mtu = 'mtu 9216'
     no_shut = 'no shutdown\n'
     result = [conf_t, conf_create_vlan, config_ip_vlan, config_ip, config_mtu, no_shut]
-    return result
-
+    join_result = '\n'.join(result)
+    return join_result
 
 def check_ip(ip):
     try:
@@ -35,8 +35,17 @@ def check_ip(ip):
 
 def need_ip():
     ip = input('Input IP for vlan:')
-    if helpers.check_ip(ip) == True:
+    if check_ip(ip) == True:
         return ip
     else:
         print('Invalid IP address, please try again')
         need_ip()
+
+def need_mask():
+    mask = input('Input mask for vlan ip:')
+    ip = mask
+    if check_ip(ip) == True:
+        return mask
+    else:
+        print('Invalid mask address, please try again')
+        need_mask()
