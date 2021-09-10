@@ -10,15 +10,15 @@ def parse_args(argv):
     parser.add_argument('--ip', required=True, help='cloud address')
     parser.add_argument('--password', required=True, help='user password')
     parser.add_argument('--user', required=True, help='username for ssh')
-    parser.add_argument('--command', help='command for execute')
     return parser.parse_args(argv)
 
 if __name__ == "__main__":
     vlan = input('Input Vlan number:')
     ip = helpers.need_ip()
     mask = helpers.need_mask()
-    config = helpers.configure_intf(vlan=vlan, ip=ip, mask=mask)
+    dhcp = helpers.need_dhcp()
     args = parse_args(sys.argv[1:])
+    config = helpers.configure_intf(vlan=vlan, ip=ip, mask=mask, dhcp=dhcp)
     client = helpers.connect(ip=args.ip, user=args.user, password=args.password)
     result = client.invoke_shell()
     result.send(config)

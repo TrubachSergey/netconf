@@ -12,7 +12,7 @@ def connect(user, ip, password):
     return client
 
 
-def configure_intf(vlan, ip, mask):
+def configure_intf(vlan, ip, mask, dhcp=None):
     '''
     Функция генерирует конфигурацию интерфейса
     '''
@@ -21,8 +21,12 @@ def configure_intf(vlan, ip, mask):
     config_ip_vlan = f'interface vlan {vlan}'
     config_ip = f'ip address {ip} {mask}'
     config_mtu = 'mtu 9216'
+    config_dhcp_relay = f'ip dhcp relay address {dhcp}'
     no_shut = 'no shutdown\n'
-    result = [conf_t, conf_create_vlan, config_ip_vlan, config_ip, config_mtu, no_shut]
+    if dhcp != None:
+       result = [conf_t, conf_create_vlan, config_ip_vlan, config_ip, config_mtu, config_dhcp_relay, no_shut]
+    else:
+        result = [conf_t, conf_create_vlan, config_ip_vlan, config_ip, config_mtu, no_shut]
     join_result = '\n'.join(result)
     return join_result
 
@@ -49,3 +53,15 @@ def need_mask():
     else:
         print('Invalid mask address, please try again')
         need_mask()
+
+def need_dhcp():
+    is_dhcp = input('Do you need DHCP relay? (Yes or No):')
+    if is_dhcp.lower() == 'yes':
+        dhcp = input('Input DHCP relay address:')
+        ip = dhcp
+        if check_ip(ip) == True:
+            return dhcp
+        else:
+            print('Invalid IP address, please try again')
+            need_dhcp()
+
