@@ -4,6 +4,9 @@ import ipaddress
 def connect(user, ip, password):
     '''
     Функция подключения к оборудованию по SSH
+    TODO Переделать в класс для общего коннекта.
+    Создать  класс для коннекта к циске с дмумя  методами show и конфигурация
+    В классах часть функций сделать приватными
     '''
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
