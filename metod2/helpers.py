@@ -33,7 +33,7 @@ def need_dhcp():
             return dhcp
         else:
             print('Invalid IP address, please try again')
-            need_dhcp()
+
 
 def need_vlan():
     vlan = int(input('Input Vlan number:'))
@@ -45,8 +45,17 @@ def need_vlan():
 
 def need_port():
     port = int(input('Input port number for configure:'))
-    if port >= 1 and port <= 52
+    if port >= 1 and port <= 52:
         return port
     else:
         print('Port is not in range, please try again')
         need_port()
+
+def need_trunk():
+    trunk = input('Do you want to configure trunk? (Yes or No):')
+    if trunk.lower() == 'yes':
+        return trunk
+
+
+
+
