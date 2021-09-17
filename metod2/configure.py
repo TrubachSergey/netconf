@@ -18,7 +18,6 @@ def configure_vlan_intf(vlan, ip, mask, dhcp=None):
        result = [conf_create_vlan, config_ip_vlan, config_ip, config_mtu, config_dhcp_relay, no_shut]
     else:
         result = [conf_create_vlan, config_ip_vlan, config_ip, config_mtu, no_shut]
-    print(result)
     return result
 
 def configure_phisical_intf(port, vlan=None, trunk=None):
@@ -33,7 +32,6 @@ def configure_phisical_intf(port, vlan=None, trunk=None):
         result = [conf_port, conf_trunk]
     else:
         result = [conf_port, conf_access, conf_vlan]
-    print(result)
     return result
 
 def cisco_create_vlan():
